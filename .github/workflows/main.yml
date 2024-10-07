@@ -1,0 +1,19 @@
+name: Test Workflow
+
+on:
+  workflow_dispatch:
+  pull_request_review:
+    branches: [ "master"]
+    types: [submitted]
+jobs:
+  build:
+    if: "!contains(github.event.pull_request.labels.*.name, 'ignore-build')"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Version
+      run: dotnet --version
